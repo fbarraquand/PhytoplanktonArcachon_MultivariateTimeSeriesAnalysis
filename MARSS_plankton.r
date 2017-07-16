@@ -15,8 +15,8 @@ lieu="Teychan" #Or "B7"
 
 ###Phytoplankton, guild definitions
 sp=c("AST","NIT","PSE","SKE","CHA","GUI","LEP","RHI","GYM","PRP","CRY","EUG")
-sp_pen=c("AST","NIT","PSE","SKE") #pennate diatoms
-sp_cen=c("CHA","GUI","LEP","RHI") #centric diatoms
+sp_pen=c("AST","NIT","PSE") #pennate diatoms
+sp_cen=c("SKE","CHA","GUI","LEP","RHI") #centric diatoms
 sp_diat=c(sp_pen,sp_cen) #diatoms
 sp_din=c("GYM","PRP") #dinoflagellates
 ###Nutrient definition
