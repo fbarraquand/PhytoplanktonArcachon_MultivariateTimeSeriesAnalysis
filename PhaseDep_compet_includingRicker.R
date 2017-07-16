@@ -12,10 +12,6 @@ source("functions_global.r")
 
 ###Phytoplankton, guild definitions
 sp=c("AST","NIT","PSE","SKE","CHA","GUI","LEP","RHI","GYM","PRP","CRY","EUG")
-sp_pen=c("AST","NIT","PSE","SKE")
-sp_cen=c("CHA","GUI","LEP","RHI")
-sp_diat=c(sp_pen,sp_cen)
-sp_din=c("GYM","PRP")
 ###Nutrient definition
 cov3_phy=c("SAL","CumRg","MeanVent")
 cov3_nut=c('Ntot','SI','PHOS')
