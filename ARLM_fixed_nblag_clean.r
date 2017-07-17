@@ -17,7 +17,6 @@ sp=sort(sp)
 #Covariates we use
 cov3_phy=c("SAL","CumRg","MeanVent") #physics-only model
 cov3_nut=c('Ntot','PHOS') #nutrient model
-cov3_ic=c("NAO_month","AMO_month") #climatic index model
 cov3_tot=c(cov3_phy) #Here, cov3_tot can aggregate several covariate vectors described above
 cov3=sort(cov3_tot)
 cov_saison=cov3
@@ -112,7 +111,7 @@ for (s in sp){
         var27=na.approx(tab_covbis7,maxgap=1,x=dates_correct7,xout=dates_bis7,na.rm=FALSE)
         var37=var27[nb_lag:(dim(var27)[1]-1),]
 
-#Use of a saturating value for nitrogen
+#Use of a saturating value for nitrogen. stress_function can be found in the file functions_global.r
 	if(use_stress){
 		if (s=="CRY"){ #cryptophytes
 			threshold=1.2*2
