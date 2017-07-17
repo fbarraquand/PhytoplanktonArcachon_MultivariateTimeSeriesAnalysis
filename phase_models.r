@@ -4,28 +4,24 @@
 ###Setting path and library
 rm(list=ls())
 graphics.off()
-args = commandArgs(trailingOnly=TRUE) ## does this goes with something else? 
-
-path_script="/home/cpicoche/Documents/Plankton/script/"
-path_data_post="/home/cpicoche/Documents/Plankton/data/treated/"
 
 library("zoo")
 library("lubridate")
 library("MARSS")
-source(paste(path_script,"functions_global.r",sep=""))
+source("functions_global.r")
 
 ###Phytoplankton, guild definitions
 sp=c("AST","NIT","PSE","SKE","CHA","GUI","LEP","RHI","GYM","PRP","CRY","EUG")
 ###Nutrient definition
-#cov3_phy=c("SAL","CumRg","MeanVent")
-cov3_phy=c("CumRg")
+cov3_phy=c("CumRg") #Physics-based variables can be irradiance or temperature
 cov3_tot=c(cov3_phy,"SAL","TEMP","CHL") #covariates we are going to use, including temperature and chlorophyll for cluster computation
 
 sink("phase_dependent_growth.txt")
 for(lieu in c("Teychan","B7")){
 
+#Loading data	
 filename=paste(path_data_post,lieu,"_base.csv",sep="")
-tabbis=read.csv(filename,header=TRUE,sep=";",dec=".")#na.strings="NA"
+tabbis=read.csv(filename,header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
 tab=tabbis
 tab_sp=tab[,sp]
@@ -34,10 +30,10 @@ tab_sp=tab[,sp]
 accum_vent=3 #We take into account wind energy 3 days before the date
 tab_cov=new_covar(tab,dates,accum_vent)
 
-### For a non-linear model, we can abitrarily decide that above 11 (log(N)), 
-### it is bloom density, and have for each species a bloom variable = 1 or 0
-### Then we use the growth rate ~ lm (log(CHA)+log(AST)+log(TEMP))
-### Fit a SETAR à la Stenseth also... where we estimate this threshold.
+### For a non-linear model, we can set 11 in log abundance as the bloom density
+### threshold. For for each species, we have a bloom variable = 1 or 0
+### Then we use the growth rate ~ lm (log(CHA)+log(AST)+log(TEMP/CumRg))
+### Fit a Threshold AutoRegressive model.
 bloom_thresh=11
 tab$AST_bloom=0
 tab$CHA_bloom=0
@@ -103,11 +99,14 @@ lm_CHA= lm(tab$r_CHA[tab$CHA_bloom==0] ~ tab$L_CHA[tab$CHA_bloom==0] + tab$L_AST
 print(summary(lm_CHA))
 
 #########################CLUSTER###############
-cut=2
-di=dist(tab_cov[,c("CHL","SAL")],method="euclidean")
-ag=hclust(di,method="ward.D2")
-plou=cutree(ag,k=cut)
+### Here, the model is the same but the threshold is based on environmental conditions
+### whose multidimensional nature is summarized by clustering	
+cut=2 #We want two clusters of environmental conditions
+di=dist(tab_cov[,c("CHL","SAL")],method="euclidean") #We build a distance matrix
+ag=hclust(di,method="ward.D2") #This distance matrix leads to clustering using ward method
+plou=cutree(ag,k=cut) #We extract two clusters from this tree
 
+#For each phase, we build a linear model for temperature and irradiance	
 for (c in 1:cut){
 	print(paste("Phase",c,sep=" "))
         indi=which(plou==c)
