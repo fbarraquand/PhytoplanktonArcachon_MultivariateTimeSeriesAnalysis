@@ -30,7 +30,7 @@ new_covar=function(tab,dates,accum_vent,start="t-1"){
 	id=is.infinite(tab_cov[,"P/N"])
 	tab_cov[id,"P/N"]=NA
 	tab_cov[,"SAL"]=tab[,"SAL"]
-	tab_cov[,"SI/N"]=tab[,"SI"]/tab_cov[,"Ntot"] #Chose this one instead of Ntot because less correlation with Ntot and PHOS
+	tab_cov[,"SI/N"]=tab[,"SI"]/tab_cov[,"Ntot"]
 	id=is.infinite(tab_cov[,"SI/N"])
 	tab_cov[id,"SI/N"]=NA
 	tab_cov[,"TEMP"]=tab[,"TEMP"]
