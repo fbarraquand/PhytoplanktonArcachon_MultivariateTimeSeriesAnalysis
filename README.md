@@ -1,5 +1,5 @@
-# Multivariate time series analyses of Arcachon phytoplankton time series in relation to environmental variables
-This repository contains the files and the data needed to reproduce the analyses in Barraquand et al. 2017 Weak interactions between groups and predominantly physical drivers of community dynamics in coastal phytoplankton. Specifically, 
+# Multivariate time series analyses of Arcachon phytoplankton time series - abiotic and biotic drivers of community dynamics
+This repository contains the files and the data needed to reproduce the analyses in Barraquand et al. 2017 *Weak interactions between groups and predominantly physical drivers of community dynamics in coastal phytoplankton*. Specifically, 
 
 * `B7_base.csv`, `Teychan_base.csv` are phytoplankton counts at Teychan and B7 (+ some additional variables)
 * `meteo.Rdata`, `nao.Rdata`, `vent.Rdata` are respectively the meteorological, climate indices and wind datasets
