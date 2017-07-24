@@ -1,5 +1,5 @@
-##### FB - 30/11/2016 - Try phase-dep and nonlinear competition models for CHA / AST, just to check there are no interactions
-##### Also check pairwise Granger causality
+##### FB - 30/11/2016 - Try other nonlinear competition models for CHA / AST, just to check there are no interactions
+##### Also check pairwise Granger causality in passing
 
 ###Setting path and library
 rm(list=ls())
@@ -72,32 +72,6 @@ lm_AST = lm(tab$r_AST ~ tab$L_AST + tab$L_CHA + tab$TEMP)
 print(summary(lm_AST))
 lm_CHA= lm(tab$r_CHA~ tab$L_CHA + tab$L_AST + tab$TEMP)
 print(summary(lm_CHA))
-
-### Bloom model
-lm_AST = lm(tab$r_AST[tab$AST_bloom==1] ~ tab$L_AST[tab$AST_bloom==1]  + tab$L_CHA[tab$AST_bloom==1]  + tab$TEMP[tab$AST_bloom==1] )
-print(summary(lm_AST))
-lm_CHA= lm(tab$r_CHA[tab$CHA_bloom==1] ~ tab$L_CHA[tab$CHA_bloom==1] + tab$L_AST[tab$CHA_bloom==1] + tab$TEMP[tab$CHA_bloom==1])
-print(summary(lm_CHA))
-
-### Non-bloom model
-lm_AST = lm(tab$r_AST[tab$AST_bloom==0] ~ tab$L_AST[tab$AST_bloom==0]  + tab$L_CHA[tab$AST_bloom==0]  + tab$TEMP[tab$AST_bloom==0] )
-print(summary(lm_AST)) ### Stronger effect of CHA there. 
-lm_CHA= lm(tab$r_CHA[tab$CHA_bloom==0] ~ tab$L_CHA[tab$CHA_bloom==0] + tab$L_AST[tab$CHA_bloom==0] + tab$TEMP[tab$CHA_bloom==0])
-print(summary(lm_CHA))
-
-### Non-bloom model with CumRg instead of TEMP
-lm_AST = lm(tab$r_AST[tab$AST_bloom==0] ~ tab$L_AST[tab$AST_bloom==0]  + tab$L_CHA[tab$AST_bloom==0]  + tab_cov$CumRg[tab$AST_bloom==0] )
-print(summary(lm_AST)) ### Stronger effect of CHA disappears here. 
-lm_CHA= lm(tab$r_CHA[tab$CHA_bloom==0] ~ tab$L_CHA[tab$CHA_bloom==0] + tab$L_AST[tab$CHA_bloom==0] + tab_cov$CumRg[tab$CHA_bloom==0])
-print(summary(lm_CHA))
-### I'd be tempted to say that the level of competition does not depend on bloom vs non-bloom conditions. 
-### Or we can consider that we have increasing or decreasing phase
-### This is more important for the abiotic variables, as we may expect 
-### the cumulated irradiance to be more influential pre- than post-bloom. 
-### For this, do we need to smooth? 
-### Also, the effect might be dependent on the season 
-### (which might or might not be modelled as an interaction with temperature)
-
 
 ### Try pairwise Granger causality. 
 require(lmtest)
