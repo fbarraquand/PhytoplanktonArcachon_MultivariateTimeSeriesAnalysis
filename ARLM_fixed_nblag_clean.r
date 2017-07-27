@@ -8,14 +8,14 @@ library("zoo")
 library("lubridate")
 library("perturb") #for collinearity index
 library("sme") #for AICc
+library("Hmisc") #for errbar
 source("functions_global.r")
 
 #Planktonic species we study
-sp=c("GUI", "LEP", "NIT", "PSE", "RHI", "SKE", "CHA", "AST", "GYM",  "PRP", "EUG", "CRY")
-sp=sort(sp)
+sp=c("AST","NIT","PSE","SKE","CHA","GUI","LEP","RHI","GYM","PRP","CRY","EUG")
 
 #Covariates we use
-cov3_phy=c("SAL","CumRg","MeanVent") #physics-only model
+cov3_phy=c("CumRg","MeanVent","SAL") #physics-only model
 cov3_nut=c('Ntot','PHOS') #nutrient model
 cov3_tot=c(cov3_phy) #Here, cov3_tot can aggregate several covariate vectors described above
 cov3=sort(cov3_tot)
@@ -40,8 +40,9 @@ nb_lag=3 #Number of lag determined in a previous analysis
 
 centr_reduit=TRUE #Boolean for scaled variable
 desaisonnalise=TRUE #Boolean for a dedicated seasonal component
-use_stress=TRUE #Boolean for saturating function
-doyouplot=TRUE #Boolean to plot the residuals of the linear model
+use_stress=FALSE #Boolean for saturating function
+doyouplot=FALSE #Boolean to plot the residuals of the linear model
+figure_4=TRUE #Boolean to plot figure 4
 
 #Options for plotting
 max_ci=0.0
@@ -59,7 +60,8 @@ fileout="lm_test.txt"
 sink(fileout)
 print(paste("Simulation uses covariates",paste(cov3,collapse=" "),"with z-scored",centr_reduit,", de-season",desaisonnalise,"use_stress",use_stress,"and nb_lag",nb_lag))
 
-for (s in sp){
+for (ss in 1:length(sp)){
+	s=sp[ss]
 	#CRY and EUG have not been correctly recorded for a while, so we have to change the dates
         if(s=="CRY"|s=="EUG"|s=="GYM"){
                 dates_correct=dates[year(dates)>1996]
@@ -206,6 +208,21 @@ for (s in sp){
 		print(AICc(ll))	
 		print("*****************************AIC**************************")
 
+		if(figure_4){
+	                if(ss==1){
+        	        	aadd=FALSE
+                	        pdf("lm_tot_lag3.pdf",width=20)
+                        	par(mfrow=c(1,1),oma=c(1,1,5,1),mar=c(5,5,1,1))
+	                }else{
+        	        	aadd=TRUE
+                	}
+                	errbar(ss,coef(summary(ll))[2+nb_lag, "Estimate"],coef(summary(ll))[2+nb_lag, "Estimate"]+coef(summary(ll))[2+nb_lag, "Std. Error"],coef(summary(ll))[2+nb_lag, "Estimate"]-coef(summary(ll))[2+nb_lag, "Std. Error"],xlim=c(1,52),add=aadd,ylim=c(-0.5,0.5),xaxt="n",ylab="Covariate effect",xlab="",lwd=2.5,cex.lab=2.5,cex.axis=1.75,cex=2)
+                	for (c in 2:(length(cov3)+1)){ #+1 for season
+		                errbar(ss+13*(c-1),coef(summary(ll))[1+nb_lag+c, "Estimate"],coef(summary(ll))[1+nb_lag+c, "Estimate"]+coef(summary(ll))[1+nb_lag+c, "Std. Error"],coef(summary(ll))[1+nb_lag+c, "Estimate"]-coef(summary(ll))[1+nb_lag+c, "Std. Error"],add=TRUE,lwd=2.5,cex=2)
+                	}
+		}
+
+
 #Plot the residuals
 		if(doyouplot){
 	               	pdf(paste(s,"_verif_residuals.pdf",sep=""))
@@ -217,4 +234,15 @@ for (s in sp){
 
 		}
 }
+		if(figure_4){
+	               	axis(1,at=c(seq(1,12),seq(14,25),seq(27,38),seq(40,51)),rep(c(sp),4),las=2,cex.axis=1.75)
+       		       	mtext(c("Irradiance","Wind","Salinity","Season"),side=3,at=c(6,19,33,47),cex=2.5,line=3)
+      	   	       	mtext(c(expression(paste("(J cm"^"-2",")",sep="")),expression(paste("(m"^"2"," s"^"-2",")",sep="")),expression(paste("(g kg"^"-1",")",sep="")),""),at=c(6,19,33,47),side=3,cex=2.5,line=0.25)
+                	abline(v=13,lty=2,lwd=1.75)
+	                abline(v=26,lty=2,lwd=1.75)
+        	        abline(v=39,lty=2,lwd=1.75)
+        	        abline(h=0,lty=2,lwd=1.75)
+                	dev.off()
+		}
+
 sink()
