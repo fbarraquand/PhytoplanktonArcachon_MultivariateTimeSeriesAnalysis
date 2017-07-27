@@ -23,7 +23,7 @@ apc=2
 pdf("figure_5.pdf",width=17,height=15)
 
 #Load results for Teychan
-load(paste("Teychan_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
+load(paste("Teychan_physics_pencen.RData",sep=""))
 cisv1=eval(parse(text=paste("cisv1=",ls(pattern='cis'),sep="")))
 cis=cisv1
 
@@ -105,7 +105,7 @@ for (j in 1:length(var)){
 
 #Load B7 results and do exactly the same thing, with a small shift on the x-axis
 rm(list=ls(pattern='cis'))
-load(paste("B7_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
+load(paste("B7_physics_pencen.RData",sep=""))
 cisv1=eval(parse(text=paste("cisv1=",ls(pattern='cis'),sep=""))) 
 cis=cisv1
 
