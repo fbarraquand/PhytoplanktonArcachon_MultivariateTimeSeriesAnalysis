@@ -12,5 +12,5 @@ This repository contains the files and the data needed to reproduce the analyses
 * `Ricker.R` considers the alternative Ricker functional form of density-dependence, and compare its fit and simulated dynamics to the Gompertz assumption (i.e., MAR(1) model in log(abundance)) 
 * 'arlm_aicc.csv' contains the different AICc for ARX(p), which are analysed in 'figure_3.r' to produce Figure 3 in Barraquand et al. 2017
 * 'MARSS_results' contains results from MARSS_plankton.r for B7 and Teychan for the five different interaction matrices explored in Barraquand et al. 2017
-* 'figure_5.r' and 'figure_6.r' produces the corresponding Figures in main text
+* 'figure_5.r' and 'figure_6.r' produce the corresponding Figures in main text
 
