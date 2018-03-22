@@ -20,10 +20,10 @@ fac_lab=1.5
 alwd=2.5
 apc=2
 
-pdf("figure_5.pdf",width=17,height=15)
+pdf("figure_5_essai.pdf",width=17,height=15)
 
 #Load results for Teychan
-load(paste("Teychan_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
+load(paste("./../../../Teychan_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
 cisv1=eval(parse(text=paste("cisv1=",ls(pattern='cis'),sep="")))
 cis=cisv1
 
@@ -105,7 +105,7 @@ for (j in 1:length(var)){
 
 #Load B7 results and do exactly the same thing, with a small shift on the x-axis
 rm(list=ls(pattern='cis'))
-load(paste("B7_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
+load(paste("./../../../B7_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData",sep=""))
 cisv1=eval(parse(text=paste("cisv1=",ls(pattern='cis'),sep=""))) 
 cis=cisv1
 
@@ -170,4 +170,14 @@ for (j in 1:length(var)){
 
         }
 }
+
+#Drawing a legend
+#rect(11+0.4,9.9,12.75,10.+fact*1.25,col=NULL,border="black",lty=1,lwd=2)
+rect(11.,10,11.+2*pm,10+fact,col="blue")
+text(11.+5*pm,10+fact,"1",cex=1.8)
+text(11.+5*pm,10.1,"0",cex=1.8)
+text(11.+5*pm,10+fact*.5,"0.5",cex=1.8)
+text(11.+10*pm,10+fact*.45,expression("b"["ij"]),cex=2.25)#,srt=90)
+
+
 dev.off()
