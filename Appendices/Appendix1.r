@@ -2,11 +2,11 @@ rm(list=ls())
 graphics.off()
 
 ###########Figure S1.1
-path_data="/home/cpicoche/Documents/Plankton/data/"
+path_data="/home/cpicoche/Documents/Plankton/data/treated/"
 
 #Loading data
-filename=paste(path_data,"treated/Teychan_base.csv",sep="")
-filenameB7=paste(path_data,"treated/B7_base.csv",sep="")
+filename=paste(path_data,"Teychan_base.csv",sep="")
+filenameB7=paste(path_data,"B7_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbisB7=read.csv(filenameB7,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbis$Date=as.Date(tabbis$Date)
@@ -58,13 +58,13 @@ dev.off()
 ###########Figure S1.4
 library("corrplot")
 library("zoo")
-source("../functions_global.r",sep="")
+source("../functions_global.r")
 
 #Data
-filename=paste(path_data_post,"Teychan_base.csv",sep="")
+filename=paste(path_data,"Teychan_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
-filename7=paste(path_data_post,"B7_base.csv",sep="")
+filename7=paste(path_data,"B7_base.csv",sep="")
 tabbis7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tabbis7$Date)
 
@@ -137,13 +137,13 @@ xli1=8
 xli2=72
 m=3
 
-filename="Teychan_base.csv"
+filename="../Teychan_base.csv"
 tab=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tab$Date)
 dates_bis=seq(dates[dates>as.Date("01/01/1997","%d/%m/%Y")][1],dates[length(dates)],14)
 tab_cov=new_covar(tab,dates,accum_vent)
 
-filename2="B7_base.csv"
+filename2="../B7_base.csv"
 tab7=read.csv(filename2,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tab7$Date)
 dates_bis7=seq(dates7[1],dates7[length(dates7)],14)
@@ -220,10 +220,10 @@ alwd=2.5
 awidth=20
 
 #Data
-filename=paste(path_data_post,"Teychan_base.csv",sep="")
+filename=paste(path_data,"Teychan_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
-filename7=paste(path_data_post,"B7_base.csv",sep="")
+filename7=paste(path_data,"B7_base.csv",sep="")
 tabbis7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 
 accum_vent=3 #We take into account wind energy 3 days before the date
@@ -254,7 +254,7 @@ li1=min(min(plou2$fitted.values,na.rm=TRUE),min(plou3$fitted.values,na.rm=TRUE),
 li2=max(max(plou2$fitted.values,na.rm=TRUE),max(plou3$fitted.values,na.rm=TRUE),max(pifbis$fitted.values,na.rm=TRUE))
 plot(dates_bis[indi2],plou2$fitted.values,col="black",t="l",xlim=c(dates_bis[1]-900,dates_bis[length(dates_bis)]),ylim=c(li1,li2),xlab="",ylab="Seasonal component",cex.main=fac_main,cex.axis=fac_axis,cex.lab=fac_lab,lwd=alwd)
 lines(dates_bis[indi3],plou3$fitted.values,col="blue",t="l",lwd=alwd)
-lines(dates_bis[indi1][indi_exp],pifbis$fitted.values,col="red",t="l",lwd=alwd)
+lines(dates_bis[indi2][indi_exp],pifbis$fitted.values,col="red",t="l",lwd=alwd)
 legend("topleft",c("CumRg","Temp","Ntot"),col=c("black","blue","red"),lty=1,cex=fac_lg)
 dev.off()
 
@@ -318,6 +318,29 @@ legend("topleft",c("LM","Decompose","STL"),col=c("black","blue","red"),lty=c(1,1
 dev.off()
 
 ###########Figure S1.14
+cov3_phy=c("SAL","CumRg","MeanVent")
+cov3_nut=c('Ntot','SI','PHOS')
+cov3_tot=c(cov3_phy,"TEMP") #covariates we are going to use, including temperature
+
+###Loading data
+filename="../Teychan_base.csv"
+tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
+dates=as.Date(tabbis$Date)
+
+###Treating covariates to have cumulated radiation and wind energy
+accum_vent=3 #We take into account wind energy 3 days before the date
+tab_cov=new_covar(tabbis,dates,accum_vent)
+
+###Treating missing values for both species and covariates###
+consecutif=2 #Number of missing values above which we keep the NA
+timestep=14 #Regular time lapses between two observations
+dates_bis=seq(dates[1],dates[length(dates)],timestep) #Regular time grid
+tab_cov_bis=matrix(NA,length(dates_bis),length(cov3_tot))
+colnames(tab_cov_bis)=cov3_tot
+for (c in cov3_tot){
+        tab_cov_bis[,c]=approx(tab_cov[,c],x=dates,xout=dates_bis)$y
+}
+
 fac_main=3.0
 fac_axis=2.0
 fac_lg=1.5
@@ -388,12 +411,12 @@ dev.off()
 sp=c("GUI", "LEP", "NIT", "PSE", "RHI", "SKE", "CHA", "AST", "GYM",  "PRP", "EUG", "CRY")
 sp=sort(sp)
 #Data
-filename=paste(path_data_post,"Teychan_base.csv",sep="")
+filename=paste("../Teychan_base.csv",sep="")
 tab=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tab$Date)
 dates_correct=dates[year(dates)>1996]
 #New
-filename7=paste(path_data_post,"B7_base.csv",sep="")
+filename7=paste("../B7_base.csv",sep="")
 tab7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tab7$Date)
 dates_correct7=dates7[year(dates7)>1996]
@@ -479,7 +502,6 @@ for(s in sp){
         dev.off()
 }
 
-
 ###########Figure S1.17
 library("lubridate")
 pdf("spectrum_flore_bis_for_each_species.pdf")
@@ -501,7 +523,7 @@ for (s in sp){
 	var1_bis[1,]=var1
 	var1_bis[1,is.na(var1)]=10 #Minimum detectable abundance
 
-	var2=na.approx(tabbis2[,s],maxgap=2,x=dates2,xout=dates_bis2,na.rm=FALSE)
+	var2=na.approx(tabbis7[,s],maxgap=2,x=dates7,xout=dates_bis7,na.rm=FALSE)
 	var2_bis=matrix(NA,nrow=maxi_test,ncol=length(var2))
 	var2_bis[1,]=var2
 	var2_bis[1,is.na(var2)]=10
@@ -568,13 +590,13 @@ xli1=8
 xli2=72
 m=3
 
-filename=paste(path_data_post,"Teychan_base.csv",sep="")
+filename=paste("../Teychan_base.csv",sep="")
 tab=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tab$Date)
 dates_bis=seq(dates[dates>as.Date("01/01/1997","%d/%m/%Y")][1],dates[length(dates)],14)
 tab_cov=new_covar(tab,dates,accum_vent)
 
-filename2=paste(path_data_post,"B7_base.csv",sep="")
+filename2=paste("../B7_base.csv",sep="")
 tab7=read.csv(filename2,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tab7$Date)
 dates_bis7=seq(dates7[1],dates7[length(dates7)],14)
@@ -620,7 +642,7 @@ for (s in sp){
         yli2=max(c(xbis[,,2],xbis7[,,2]))
 
         plot(freq,spec,xlim=c(xli1,xli2),xaxt="n",xlab="Period (month)",ylab="",main=s,lty=1,lwd=3,ylim=c(yli1,yli2),cex.main=fac_main,t="n",cex.lab=fac_lab,cex.axis=fac_axis)
-xis(1,at=ate,labels=labe,cex.axis=fac_axis,cex.lab=fac_lab)
+	axis(1,at=ate,labels=labe,cex.axis=fac_axis,cex.lab=fac_lab)
         for(i in 1:maxi_test){
                 lines(xbis[i,,1],xbis[i,,2],lty=1,lwd=alwd,col="black")
                 lines(xbis7[i,,1],xbis7[i,,2],lty=1,lwd=alwd,col="blue")
