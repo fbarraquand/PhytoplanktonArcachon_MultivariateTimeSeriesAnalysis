@@ -6,7 +6,7 @@
 #Cumulate daily values, transform values to ratios when necessary, cumulate nitrogen sources
 new_covar=function(tab,dates,accum_vent,start="t-1"){
 #Load meteorological data
-        path_data_post="./"
+        path_data_post="/home/cpicoche/Documents/Plankton/data/treated/"
 	load(paste(path_data_post,"vent.RData",sep=""))
 	load(paste(path_data_post,"meteo.RData",sep=""))
 	date_meteo=as.Date(meteo$Date)
