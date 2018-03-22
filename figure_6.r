@@ -1,5 +1,5 @@
 ###############################################################################################################################################
-                                      ########CP - Plot Fig. 5 in Barraquand et al. 2017 using MARSS results ########
+                                      ########CP - Plot Fig. 6 in Barraquand et al. 2017 using MARSS results ########
 ###############################################################################################################################################
 
 ### Initialize
@@ -12,7 +12,7 @@ library("lubridate")
 
 ###Loading data
 #Simulation
-openfile=paste("/home/cpicoche/Documents/Plankton/Teychan_physics_pencen_seasonal_bis_NEW_NOMISTAKE_in_urgent.RData")
+openfile=paste("Teychan_physics_pencen.RData")
 load(openfile)
 
 #Real data
