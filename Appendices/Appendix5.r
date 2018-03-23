@@ -63,7 +63,7 @@ cex_pch=2
 fac_lab=2
 alwd=4
 fac_main=3
-
+pchtest=c(16,17,18)
 
 pdf("dynamique_Teychan_B7.pdf",width=15,height=10)
 par(mfrow=c(3,3),
@@ -76,17 +76,17 @@ plot(tt,col=plou,pch=16,xlab="Salinity",ylab="Chlorophyll a",cex.axis=fac_axis,c
 w=0
 tw=c("Chlorophyll a","Salinity")
 for (v in c("CHL","SAL")){
-w=w+1
-if(w==1){
-mati="Teychan"
-}else{
-mati=""
-}
+	w=w+1
+	if(w==1){
+		mati="Teychan"
+	}else{
+		mati=""
+	}
 
-plot(dates_bis,tt[,v],t="n",lty=3,col="grey",ylab=tw[w],main=mati,xlab="",cex.axis=fac_axis,cex.lab=fac_lab,lwd=alwd,cex.main=fac_main)
-for (i in 1:cut){
-        indi=which(plou==i)
-        points(dates_bis[indi],tt[indi,v],pch=pchtest[i],col=c("black","red")[i],cex=cex_pch)
+	plot(dates_bis,tt[,v],t="n",lty=3,col="grey",ylab=tw[w],main=mati,xlab="",cex.axis=fac_axis,cex.lab=fac_lab,lwd=alwd,cex.main=fac_main)
+	for (i in 1:cut){
+        	indi=which(plou==i)
+	        points(dates_bis[indi],tt[indi,v],pch=pchtest[i],col=c("black","red")[i],cex=cex_pch)
         }
 }
 
@@ -109,16 +109,16 @@ plou=cutree(ag,k=cut)
 plot(tt2,col=plou,pch=16,xlab="Salinity",ylab="Chlorophyll a",cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd)
 w=0
 for (v in c("CHL","SAL")){
-w=w+1
-if(w==1){
-mati="B7"
-}else{
-mati=""
-}
-plot(dates_bis2,tt2[,v],t="n",lty=3,col="grey",ylab=tw[w],xlab="",main=mati,xlim=c(dates_bis[1],dates_bis[length(dates_bis)]),cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd,cex.main=fac_main)
-for (i in 1:cut){
-        indi=which(plou==i)
-        points(dates_bis2[indi],tt2[indi,v],pch=pchtest[i],col=c("darkgrey","orange")[i],cex=cex_pch)
+	w=w+1
+	if(w==1){
+		mati="B7"
+	}else{
+		mati=""
+	}
+	plot(dates_bis2,tt2[,v],t="n",lty=3,col="grey",ylab=tw[w],xlab="",main=mati,xlim=c(dates_bis[1],dates_bis[length(dates_bis)]),cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd,cex.main=fac_main)
+	for (i in 1:cut){
+        	indi=which(plou==i)
+        	points(dates_bis2[indi],tt2[indi,v],pch=pchtest[i],col=c("darkgrey","orange")[i],cex=cex_pch)
         }
 }
 
@@ -132,20 +132,19 @@ plou=cutree(ag,k=cut)
 plot(tt3,col=plou,pch=16,xlab="Salinity",ylab="Chlorophyll a",cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd)
 w=0
 for (v in c("CHL","SAL")){
-w=w+1
-if(w==1){
-mati="Teychan+B7"
-}else{
-mati=""
+	w=w+1
+	if(w==1){
+		mati="Teychan+B7"
+	}else{
+		mati=""
+	}
+	plot(dates_bis,tt3[1:dim(tt)[1],v],t="n",lty=1,col="black",ylab=tw[w],xlab="",main=mati,xlim=c(dates_bis[1],dates_bis[length(dates_bis)]),cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd,cex.main=fac_main)
+	for (i in 1:cut){
+        	indi=which(plou==i)
+	        points(dates_bis[indi[indi<=length(dates_bis)]],tt3[indi[indi<=length(dates_bis)],v],pch=16,col=c("black","red")[i],cex=cex_pch)
+        	points(dates_bis2[indi[indi>length(dates_bis)]-length(dates_bis)],tt3[indi[indi>length(dates_bis)],v],pch=17,col=c("darkgrey","orange")[i],cex=cex_pch)
+	}
 }
-
-t(dates_bis,tt3[1:dim(tt)[1],v],t="n",lty=1,col="black",ylab=tw[w],xlab="",main=mati,xlim=c(dates_bis[1],dates_bis[length(dates_bis)]),cex.axis=fac_axis,cex.lab=fac_lab,cex=cex_pch,lwd=alwd,cex.main=fac_main)
-for (i in 1:cut){
-        indi=which(plou==i)
-        points(dates_bis[indi[indi<=length(dates_bis)]],tt3[indi[indi<=length(dates_bis)],v],pch=16,col=c("black","red")[i],cex=cex_pch)
-        points(dates_bis2[indi[indi>length(dates_bis)]-length(dates_bis)],tt3[indi[indi>length(dates_bis)],v],pch=17,col=c("darkgrey","orange")[i],cex=cex_pch)
-}
-
 dev.off()
 
 ###########Figure S5.3 and S5.4 are drawn in the file Ricker.R

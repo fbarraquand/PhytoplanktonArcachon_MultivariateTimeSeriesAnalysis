@@ -26,7 +26,7 @@ fac_lab=4
 alwd=2.5
 awidth=20
 
-pdf("growth_vs_abundance_gompertz.pdf",height=20,width=20)
+pdf("growth_vs_abundance_ricker.pdf",height=20,width=20)
 par(mfrow=c(4,3),mar=c(5.1, 6.1, 4.1, 1.1))
 i=0
 for (s in sp){
@@ -55,8 +55,8 @@ for (s in sp){
         tx_croiss=diff(var1)
         tx_croiss7=diff(var17)
 	#Ricker
-#        var1=na.approx(tab[,s],maxgap=2,x=dates_correct,xout=dates_bis,na.rm=FALSE)
-#        var17=na.approx(tab7[,s],maxgap=2,x=dates_correct7,xout=dates_bis7,na.rm=FALSE)
+        var1=na.approx(tab[,s],maxgap=2,x=dates_correct,xout=dates_bis,na.rm=FALSE)
+        var17=na.approx(tab7[,s],maxgap=2,x=dates_correct7,xout=dates_bis7,na.rm=FALSE)
         var1=var1[1:length(tx_croiss)]
         var17=var17[1:length(tx_croiss7)]
         if(i%%3==1){
@@ -66,9 +66,9 @@ for (s in sp){
         }
         if(i>9){
 	#Gompertz
-                xxlab="Log abundance (C/L)"
+#                xxlab="Log abundance (C/L)"
 	#Ricker
-#                xxlab="abundance (C/L)"
+                xxlab="abundance (C/L)"
         }else{
                 xxlab=""
         }
@@ -85,7 +85,7 @@ dev.off()
 ###########Figure S2.5
 library("MARSS")
 
-args = "./MARSS_results/B7_physics_unconstrained.RData"
+args = "../MARSS_results/B7_physics_unconstrained.RData"
 
 load(args[1])
 fit_log=fit_log
@@ -117,13 +117,14 @@ dev.off()
 ###########Figure S2.6 and S2.7 are the same as figure 6
 
 ###########Figure S2.8
+library("stringr")
 l=c("Teychan")
 model=c("pencen")
 
 for(lieu in l){
 for(m in model){
 rm(list=ls()[grep('fit_log',ls())])
-openfile=paste("./MARSS_results/",lieu,"_physics_",m,".RData",sep="")
+openfile=paste("../MARSS_results/",lieu,"_physics_",m,".RData",sep="")
 load(openfile)
 eval(parse(text=paste("fit_log=",ls()[grep('fit_log',ls())],sep="")))
 
@@ -185,10 +186,6 @@ for (c in cov3_tot){
 tab_cov_bis[,length(cov3_tot)]=season$fitted.values
 cov3_tot=c(cov3_tot[1:(length(cov3_tot)-1)],"season")
 tab_cov_bis=t(scale(tab_cov_bis[1:(length(dates_bis)),]))
-#tab_cov_bis=t(scale(tab_cov_bis[2:(length(dates_bis)-2),])) #Decalage for v2; avoiding the first NaN values in the covariate time series
-
-#tab_cov_bis_estimation=tab_cov_bis[,year(dates_bis[2:(length(dates_bis)-2)])>1996]
-#tab_cov_bis_validation=tab_cov_bis[,year(dates_bis[2:(length(dates_bis)-2)])<=1996]
 
 tab_cov_bis_estimation=tab_cov_bis[,year(dates_bis[1:(length(dates_bis))])>1996]
 tab_cov_bis_validation=tab_cov_bis[,year(dates_bis[1:(length(dates_bis))])<=1996]
