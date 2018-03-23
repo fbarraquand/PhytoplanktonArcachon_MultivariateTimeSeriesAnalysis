@@ -202,7 +202,8 @@ apc=2
 awidth=15
 
 pdf("Ricker_simulation_clean.pdf",width=awidth)
-plot(1:tmax,log(N[1,]),col="green",type="o",lwd=alwd,cex.main=fac_main,cex.axis=fac_axis,cex.lab=fac_lab,cex=apc,main="",ylab="Planktonic abundance",xlab="Time",xlim=c(0,tmax+50))
+par(mar=c(5,6,1,1))
+plot(1:tmax,log(N[1,]),col="green",type="o",lwd=alwd,cex.main=fac_main,cex.axis=fac_axis,cex.lab=fac_lab,cex=apc,main="",ylab="Planktonic log(abundance)",xlab="Time",xlim=c(0,tmax+50))
 lines(1:tmax,log(N[2,]),col="blue",type="o",lwd=alwd,cex=apc)
 legend("bottomleft",c("AST","CHA"),col=c("green","blue"),lty=1,cex=fac_main,bty="n",lwd=alwd,pch="o")
 dev.off()
@@ -230,7 +231,8 @@ for (t in 1:(tmax-1)){
   n[2,t+1] = n[2,t]+r2+alpha21*n[1,t]+alpha22*n[2,t]+c2*y[t+1]+rnorm(1,0,sigma2)
 }
 pdf("Gompertz_simulation_clean.pdf",width=awidth)
-plot(1:tmax,n[1,],col="green",type="o",lwd=alwd,cex.main=fac_main,cex.axis=fac_axis,cex.lab=fac_lab,cex=apc,main="",ylab="Planktonic abundance",xlab="Time",xlim=c(0,tmax+50),ylim=c(0,20))
+par(mar=c(5,6,1,1))
+plot(1:tmax,n[1,],col="green",type="o",lwd=alwd,cex.main=fac_main,cex.axis=fac_axis,cex.lab=fac_lab,cex=apc,main="",ylab="Planktonic log(abundance)",xlab="Time",xlim=c(0,tmax+50),ylim=c(0,20))
 lines(1:tmax,n[2,],col="blue",type="o",lwd=alwd,cex=apc)
 legend("topright",c("AST","CHA"),col=c("green","blue"),lty=1,cex=fac_main,lwd=alwd,bty="n",pch="o")
 dev.off()
