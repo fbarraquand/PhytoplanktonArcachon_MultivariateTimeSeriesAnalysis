@@ -1,9 +1,6 @@
 rm(list=ls())
 
 ##Setting path and library
-#path_script="/home/cpicoche/Documents/Plankton/script/"
-path_data_post="/home/frederic/Documents/Plankton/SimulatedData/Loop_MARSS/"
-
 graphics.off()
 library("zoo")
 library("lubridate")
@@ -19,7 +16,7 @@ scenario=as.character(3)
 BFGS=FALSE
 
 ###Loading data
-filename=paste(path_data_post,"MockPlanktonTimeSeries_Loop.csv",sep="")
+filename="MockPlanktonTimeSeries_Loop.csv"
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=",",dec=".")
 for (r in 1:iter_scenario){
 	cov3_tot=c("Abiotic_var1","Abiotic_var2")

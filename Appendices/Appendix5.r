@@ -2,15 +2,13 @@ rm(list=ls())
 graphics.off()
 
 ###########Figure S5.1
-path_data_post="/home/cpicoche/Documents/Plankton/data/treated/"
-
 library("zoo")
 library("lubridate")
 
 lieu="Teychan"
 
 ###Loading data
-filename=paste(path_data_post,lieu,"_base.csv",sep="")
+filename=paste("../",lieu,"_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
 tab=tabbis[year(dates)>1996,]#Using data from 1997, because cryptophytes were not counted (or badly, for the first year, before
@@ -93,7 +91,7 @@ for (v in c("CHL","SAL")){
 #Plotting chl and salinity for B7 only
 lieu="B7"
 ###Loading data
-filename=paste(path_data_post,lieu,"_base.csv",sep="")
+filename=paste("../",lieu,"_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates2=as.Date(tabbis$Date)
 

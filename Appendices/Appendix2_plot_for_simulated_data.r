@@ -210,7 +210,7 @@ for (r in iter){
 	}
 }
 
-pdf("/home/cpicoche/Documents/Plankton/essai_graphe_bias_pour_article.pdf",width=awidth,height=aheight/1.5)
+pdf("bias_for_article.pdf",width=awidth,height=aheight/1.5)
 par(mfrow=c(1,3),mar=c(8,10,10,4))
 name_scenar=c("Evt","Inter seul","Evt+Inter")
 name_scenar=c("S1","S2","S3")
@@ -236,7 +236,7 @@ mtext("% Bias",side=2,line=5.5,at=0.2,cex=amain)
 }
 dev.off()
 
-pdf("/home/cpicoche/Documents/Plankton/essai_graphe_propok_pour_article.pdf",width=awidth,height=aheight/1.5)
+pdf("propok_for_article.pdf",width=awidth,height=aheight/1.5)
 par(mfrow=c(1,3),mar=c(8,15,10,4))
 name_scenar=c("Evt seul","Inter seul","Evt+Inter")
 name_scenar=c("S1","S2","S3")
@@ -262,7 +262,7 @@ mtext("% in the confidence interval",side=2,line=6,at=100*0.5,cex=amain*1.1)
 }
 dev.off()
 
-pdf("/home/cpicoche/Documents/Plankton/SimulatedData/Loop_MARSS/analyse/v2/essai_graphe_signdiff.pdf",width=awidth,height=aheight)
+pdf("signdiff.pdf",width=awidth,height=aheight)
 par(mfrow=c(1,3),mar=c(8,15,10,4))
 name_scenar=c("S1","S2","S3")
 tipi=c("Diag","OffDiag","Covariates")

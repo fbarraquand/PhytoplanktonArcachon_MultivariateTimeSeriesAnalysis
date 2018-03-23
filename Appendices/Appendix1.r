@@ -1,12 +1,10 @@
 rm(list=ls())
 graphics.off()
-
+library("lubridate")
 ###########Figure S1.1
-path_data="/home/cpicoche/Documents/Plankton/data/treated/"
-
 #Loading data
-filename=paste(path_data,"Teychan_base.csv",sep="")
-filenameB7=paste(path_data,"B7_base.csv",sep="")
+filename="../Teychan_base.csv"
+filenameB7="../B7_base.csv"
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbisB7=read.csv(filenameB7,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbis$Date=as.Date(tabbis$Date)
@@ -40,7 +38,7 @@ par(mfrow=c(2,1),mar=c(5.1,5.5,3,0.1))
 lieu=c("Teychan","B7")
 for (l in 1:length(lieu)){
 ###Loading data
-filename=paste(path_data,lieu[l],"_base.csv",sep="")
+filename=paste("../",lieu[l],"_base.csv",sep="")
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
 
@@ -61,10 +59,10 @@ library("zoo")
 source("../functions_global.r")
 
 #Data
-filename=paste(path_data,"Teychan_base.csv",sep="")
+filename="../Teychan_base.csv"
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
-filename7=paste(path_data,"B7_base.csv",sep="")
+filename7="../B7_base.csv"
 tabbis7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tabbis7$Date)
 
@@ -220,10 +218,10 @@ alwd=2.5
 awidth=20
 
 #Data
-filename=paste(path_data,"Teychan_base.csv",sep="")
+filename="../Teychan_base.csv"
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tabbis$Date)
-filename7=paste(path_data,"B7_base.csv",sep="")
+filename7="../B7_base.csv"
 tabbis7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 
 accum_vent=3 #We take into account wind energy 3 days before the date
@@ -411,12 +409,12 @@ dev.off()
 sp=c("GUI", "LEP", "NIT", "PSE", "RHI", "SKE", "CHA", "AST", "GYM",  "PRP", "EUG", "CRY")
 sp=sort(sp)
 #Data
-filename=paste("../Teychan_base.csv",sep="")
+filename="../Teychan_base.csv"
 tab=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates=as.Date(tab$Date)
 dates_correct=dates[year(dates)>1996]
 #New
-filename7=paste("../B7_base.csv",sep="")
+filename7="../B7_base.csv"
 tab7=read.csv(filename7,na.strings="NA",header=TRUE,sep=";",dec=".")
 dates7=as.Date(tab7$Date)
 dates_correct7=dates7[year(dates7)>1996]
