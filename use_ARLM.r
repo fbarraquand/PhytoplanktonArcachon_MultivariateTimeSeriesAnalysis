@@ -22,7 +22,7 @@ acov="Tot" #Could be "Phy","Nut" or "Tot"
 
 tab_stor_AICc=matrix(NA,nrow=length(sp),ncol=6)
 rownames(tab_stor_AICc)=sp
-colnames=c("No Season No saturation","Season No Saturation", "No Season Saturation","Season Saturation","No Season Ratio","Season Ratio")
+colnames(tab_stor_AICc)=c("No Season No saturation","Season No Saturation", "No Season Saturation","Season Saturation","No Season Ratio","Season Ratio")
 
 #ARLM function (explicit seasonal component (TRUE) or raw values (FALSE), variables in the model (Tot, Nut, Phy), place (All, Teychan or B7), ratio of nutrients (TRUE) or raw values (FALSE), saturating function (TRUE) or raw values (FALSE), species to study)
 #No Season No saturation
