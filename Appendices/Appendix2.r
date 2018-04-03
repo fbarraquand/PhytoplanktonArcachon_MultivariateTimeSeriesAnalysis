@@ -265,7 +265,7 @@ for (i in 1:10){ #not 12, because we don't take into account CRY and EUG
 r=1-r2/r1
 
 print(paste(m,lieu))
-print(r)
+print(r) #Print R^2 pred used in Table 4 in the main text
 
 fac_main=3.0
 fac_axis=2.5

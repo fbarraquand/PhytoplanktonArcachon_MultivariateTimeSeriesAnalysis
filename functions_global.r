@@ -6,7 +6,7 @@
 #Cumulate daily values, transform values to ratios when necessary, cumulate nitrogen sources
 new_covar=function(tab,dates,accum_vent,start="t-1"){
 #Load meteorological data
-        path_data_post="/home/cpicoche/Documents/Plankton/data/treated/"
+        path_data_post="./"
 	load(paste(path_data_post,"vent.RData",sep=""))
 	load(paste(path_data_post,"meteo.RData",sep=""))
 	date_meteo=as.Date(meteo$Date)
@@ -71,6 +71,56 @@ new_covar=function(tab,dates,accum_vent,start="t-1"){
                 tab_cov[d,"MeanVent"]=mean(tab_vent,na.rm=TRUE)
 }
         return(tab_cov)
+}
+
+###Searching the best AR-order with different methods
+find_best_pacf=function(x,y=NULL,maxi=15){
+        if(length(y)>0){
+                lag_max=min(maxi,length(x)-1,floor(10*log10(length(x))),length(y)-1,floor(10*log10(length(y)))) #Taking the same threshold as ar
+                x=c(x,rep(NA,lag_max+1),y) #concatenate with no dependence between x and y
+        }else{
+                lag_max=min(maxi,length(x)-1,floor(10*log10(length(x)))) #Taking the same threshold as ar
+        }
+        p=pacf(x,plot=FALSE,na.action=na.pass,lag.max=lag_max)
+        significance_level <- qnorm((1 + 0.95)/2)/sqrt(sum(!is.na(x)))
+        last=tail(which(abs(p$acf)>=significance_level),1)
+        plot(p$acf)
+        abline(h=significance_level,col="blue")
+        abline(h=-significance_level,col="blue")
+        points(p$lag[last],p$acf[last],col="red",pch=16)
+        return(p$lag[last])
+}
+
+find_best_arma=function(x,y=NULL,type="p0",maxi=15){
+        if(length(y)>0){
+                lag_max=min(maxi,length(x)-1,floor(10*log10(length(x))),length(y)-1,floor(10*log10(length(y)))) #Taking the same threshold as ar
+                x=c(x,rep(NA,lag_max+1),y) #concatenate with no dependence between x and y
+        }else{
+                lag_max=min(maxi,length(x)-1,floor(10*log10(length(x)))) #Taking the same threshold as ar
+        }
+        aic_mat=rep(NA,lag_max)
+        for (l in 1:lag_max){
+#               print(paste("Lag max",l))
+                if(type=="p0"){
+                        q=0
+                }else if (type=="pp"){
+                        q=l
+                }else if (type=="pp-1"){
+                        q=l-1
+                }else{
+                        stop("Precise the ARMA type")
+                }
+                tryCatch({
+                        aic_mat[l]=arima(x,order=c(l,0,q),method="ML",optim.method="BFGS",optim.control=list(maxit=1000))$aic #Changed optim.method to avoid problems for non-finite difference ; changed the max iterations to try and converge: not always sufficient (but should only be a problem for the longer time lags which are not necessarily meaningful
+                        },error=function(err){
+                        print(paste("For lag",l,err))
+                        })
+
+        }
+        plot(aic_mat,main=type)
+        val=which(aic_mat==min(aic_mat,na.rm=TRUE))
+        points(val,min(aic_mat,na.rm=TRUE),col="red",pch=16)
+        return(aic_mat)
 }
 
 ########## CP           - Function taking into account saturation, based on half-saturation threshold for a nutrient ###############
