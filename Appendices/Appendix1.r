@@ -8,6 +8,7 @@ filenameB7="../B7_base.csv"
 tabbis=read.csv(filename,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbisB7=read.csv(filenameB7,na.strings="NA",header=TRUE,sep=";",dec=".")
 tabbis$Date=as.Date(tabbis$Date)
+tabbisB7$Date=as.date(tabbisB7$Date)
 findnei=which(colnames(tabbis)=="NEI")
 
 #Plotting data
@@ -23,7 +24,7 @@ yli1=min(tabbis[,v],na.rm=TRUE)-0.5
 plot(0:13,rep(0,14),type="n",ylim=c(yli1,yli2),xlab="Month",ylab=var_jolie[i],xaxt="n",yaxt="n",cex.axis=2,cex.lab=2)
 for (m in 1:12){
         var=tabbis[month(tabbis$Date)==m,v]
-        var7=tabbisB7[month(tabbis$Date)==m,v]
+        var7=tabbisB7[month(tabbisB7$Date)==m,v]
         boxplot(var,at=m,add=TRUE,col="grey",bg="grey",pch=21,cex=2,cex.axis=1.5,range=1.5,lwd=1.5)
         boxplot(var7,at=m+0.4,add=TRUE,col="blue",pch=21,cex=2,bg="blue",yaxt="n",range=1.5,lwd=1.5)
         print(paste("Month",m,":",v,min(var7,na.rm=TRUE),mean(var7,na.rm=TRUE),max(var7,na.rm=TRUE)))
