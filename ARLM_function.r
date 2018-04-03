@@ -1,24 +1,29 @@
-###############################################################################################################################################
-########################################## CP - Autoregressive model with a fixed order and covariates ########################################
-###############################################################################################################################################
+#CP: This function computes linear models corresponding to each species, with a fixed number of time lags (3) and a set of covariates defined by 'acov'. It is used in use_ARLM to compute Table 3 in the manuscript. It can print Figure 4 (if figure_4 is set to TRUE). It can also print the corresponding residuals, that is Appendix S2: Fig S2.2 (if doyouplot is set to TRUE). It can also compute the collinearity indices of the models: this part is commented out for now (l.218-222) but can be easily retrieved. 
 
-rm(list=ls())
-graphics.off()
-library("zoo")
-library("lubridate")
-library("perturb") #for collinearity index
-library("sme") #for AICc
-library("Hmisc") #for errbar
-source("functions_global.r")
-
-#Planktonic species we study
-sp=c("AST","NIT","PSE","SKE","CHA","GUI","LEP","RHI","GYM","PRP","CRY","EUG")
+ARLM_function=function(season_ext,acov,place,ratio_ext,stress_ext,asp){
+	desaisonnalise=season_ext #Boolean for a dedicated seasonal component
+	use_stress=stress_ext #Boolean for saturating function
+	if(!(place %in% c("B7","Teychan","All"))){stop()}
+	if(ratio_ext){
+		cov3_nut=c('P/N','SI/N') #nutrient model
+	}else{
+		cov3_nut=c('Ntot','PHOS') #nutrient model
+	}
+	#Planktonic species we study
+	sp=asp
+	res=rep(NA,length(sp))
 
 #Covariates we use
 cov3_phy=c("CumRg","MeanVent","SAL") #physics-only model
-cov3_nut=c('Ntot','PHOS') #nutrient model
-cov3_tot=c(cov3_phy) #Here, cov3_tot can aggregate several covariate vectors described above
-cov3=sort(cov3_tot)
+cov3_tot=c(cov3_phy,cov3_nut) #Here, cov3_tot can aggregate several covariate vectors described above
+if(acov=="Tot"){
+	cov3=sort(cov3_tot)
+}else if(acov=="Nut"){
+	cov3=sort(cov3_nut)
+}else if(acov=="Phy"){
+	cov3=sort(cov3_phy)
+}
+
 cov_saison=cov3
 
 #Data from Teychan
@@ -39,10 +44,8 @@ tab_cov7=new_covar(tabbis7,dates7,accum_vent,start="t")
 nb_lag=3 #Number of lag determined in a previous analysis
 
 centr_reduit=TRUE #Boolean for scaled variable
-desaisonnalise=TRUE #Boolean for a dedicated seasonal component
-use_stress=FALSE #Boolean for saturating function
 doyouplot=FALSE #Boolean to plot the residuals of the linear model
-figure_4=TRUE #Boolean to plot figure 4
+figure_4=FALSE #Boolean to plot figure 4
 
 #Options for plotting
 max_ci=0.0
@@ -57,7 +60,6 @@ awidth=15
 
 #We output text results in fileout
 fileout="lm_test.txt"
-sink(fileout)
 print(paste("Simulation uses covariates",paste(cov3,collapse=" "),"with z-scored",centr_reduit,", de-season",desaisonnalise,"use_stress",use_stress,"and nb_lag",nb_lag))
 
 for (ss in 1:length(sp)){
@@ -104,8 +106,6 @@ for (ss in 1:length(sp)){
                 mat_ab[,i+1]=newvar1[(nb_lag-i):(length(newvar1)-1-i)]
                 mat_ab7[,i+1]=newvar17[(nb_lag-i):(length(newvar17)-1-i)]
         }
-        tx_croiss_concat=c(tx_croissbis,tx_croissbis7)
-        mat_ab_concat=rbind(mat_ab,mat_ab7)
 
         #Same thing for covariates
         var2=na.approx(tab_covbis,maxgap=1,x=dates_correct,xout=dates_bis,na.rm=FALSE)
@@ -156,13 +156,33 @@ for (ss in 1:length(sp)){
 		}
 		
 		#Concatenate values for Teychan and B7
-		season_concat=c(season$fitted.values,season7$fitted.values)
+		if(place=="All"){
+			season_concat=c(season$fitted.values,season7$fitted.values)
+		}else if(place=="B7"){
+			season_concat=season7$fitted.values
+		}else if(place=="Teychan"){
+			season_concat=season$fitted.values
+		}
 		if(centr_reduit){
 			season_concat=scale(season_concat)
 		}
 	
 	}
-        var3_concat=rbind(var3,var37)
+	if(place=="All"){
+        	tx_croiss_concat=c(tx_croissbis,tx_croissbis7)
+        	mat_ab_concat=rbind(mat_ab,mat_ab7)
+        	var3_concat=rbind(var3,var37)
+	}else if(place=="B7"){
+        	tx_croiss_concat=tx_croissbis7
+        	mat_ab_concat=mat_ab7
+        	var3_concat=var37
+	}else if(place=="Teychan"){
+        	tx_croiss_concat=tx_croissbis
+        	mat_ab_concat=mat_ab
+        	var3_concat=var3
+	}
+
+
 
 #Scaling
 	if(centr_reduit){
@@ -194,19 +214,21 @@ for (ss in 1:length(sp)){
 		}
 #Then, growth rates are modelled with past abundance and covariates
 		eval(parse(text=paste("ll=lm(tx_croiss_concat~mat_ab_concat+",com,")",sep="")))
-		print('********COLLINEARITY TEST***********')
-		print(colldiag(ll),fuzz=0.4)
-		max_ci=max(max_ci,max(colldiag(ll)$condindx))
-		avg_ci=avg_ci+max(colldiag(ll)$condindx)/length(sp)
-		print('********COLLINEARITY TEST END***********')
-		a=anova(ll)
+#Diagnostics we don't keep
+#		print('********COLLINEARITY TEST***********')
+#		print(colldiag(ll),fuzz=0.4)
+#		max_ci=max(max_ci,max(colldiag(ll)$condindx))
+#		avg_ci=avg_ci+max(colldiag(ll)$condindx)/length(sp)
+#		print('********COLLINEARITY TEST END***********')
+#		a=anova(ll)
 #Finally, keep tracks of the results with anova, AIC, AICc
-		print(summary(ll))
-		print(a)
-		print("*****************************AIC**************************")
-		print(extractAIC(ll))	
-		print(AICc(ll))	
-		print("*****************************AIC**************************")
+#		print(summary(ll))
+#		print(a)
+#		print("*****************************AIC**************************")
+#		print(extractAIC(ll))	
+#		print(AICc(ll))
+		res[ss]=AICc(ll)	
+#		print("*****************************AIC**************************")
 
 		if(figure_4){
 	                if(ss==1){
@@ -243,6 +265,6 @@ for (ss in 1:length(sp)){
         	        abline(v=39,lty=2,lwd=1.75)
         	        abline(h=0,lty=2,lwd=1.75)
                 	dev.off()
-		}
-
-sink()
+	}
+return(res)
+}
