@@ -51,7 +51,10 @@ dev.off()
 
 
 ###########Figure S1.3
-###This figure is based on the raw database we cleaned in Teychan  and B7 bases. This first database, and corresponding script, is not used afterwards and was not put in the repository. It is still available upon request.
+# This figure was produced from the raw QUADRIGE database together with Teychan_base.csv and B7_base.csv. 
+# The new files, used in later analyses, mix data from Teychan and Tes (when Teychan data is not available). 
+# This figure compares data from Tes and Teychan (and therefore cannot be produced from the aggregated data files). 
+# The raw database (which is heavy) is not used afterwards (it is the only figure where it is used) but is available upon request.
 
 
 ###########Figure S1.4
