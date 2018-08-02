@@ -1,6 +1,6 @@
 ### MARSS results
 
-This repository stores the MARSS objects corresponding to our two study sites (Teychan or Buoy 7 = B7), using only physics-based variables. 
+This repository stores the MARSS objects corresponding to our two study sites (Teychan or Buoy 7 = B7), using only physics-based abiotic covariates (light, salinity and hydrodynamics, as opposed to nutrient concentrations). 
 
 Five different interaction matrices are considered: 
 
