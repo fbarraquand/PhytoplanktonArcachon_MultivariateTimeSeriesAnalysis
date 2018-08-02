@@ -51,7 +51,7 @@ dev.off()
 
 
 ###########Figure S1.3
-###Talk to Fred: based on the script computing directly from the real data; and not sure we can put all Quadrige data directly here 
+###This figure is based on the raw database we cleaned in Teychan  and B7 bases. This first database, and corresponding script, is not used afterwards and was not put in the repository. It is still available upon request.
 
 
 ###########Figure S1.4

@@ -8,9 +8,12 @@ This repository contains the files and the data needed to reproduce the analyses
 ### Functions
 * `functions_global.r` defines a number of functions for data pre-processing
 * `spectrum.r` and `spectrum_comparison.r` compute the Fourier spectra and coherence (correlation in the spectral domain), respectively
+* `eigenvalueB.r` checks the eigenvalues of the interaction matrix estimated with MAR(1) models
+* `REPHY_aic_bic.r` prints the AICc and BIC corresponding to the different MAR(1) models previously estimated
+* `AR_test_order.r` searches for the order of the autoregressive model which best represents the univariate time series
 
 ### Model fitting
-* `ARLM_function.r` fits the autoregressive linear models (AR(p) and ARX(p)) and plot Fig. 4 in the main text
+* `ARLM_function.r` fits the autoregressive linear models (AR(p) and ARX(p)) and plot Fig. 4 in the main text with the script `use_ARLM.r`
 * `MARSS_plankton.r` fits the MAR(1) models on the plankton log(abundance) data
 * `PlanktonLike_MAR_SimulationLoop.R` simulates plankton-looking data according to three scenarios (1:abiotic-forcing-only, 2:biotic-interactions-only, 3:both)
 * `phase_models.r` fits the bivariate (plankton genus AST vs CHA), phase-dependent TAR models
