@@ -1,5 +1,5 @@
-# Multivariate time series analyses of Arcachon phytoplankton time series - abiotic and biotic drivers of community dynamics
-This repository contains the files and the data needed to reproduce the analyses in Barraquand et al. 2018 *Coastal phytoplankton community dynamics and coexistence driven by intragroup density-dependence, light and hydrodynamics*. Specifically, 
+# Multivariate time series analyses of Arcachon phytoplankton - abiotic and biotic drivers of community dynamics
+This repository contains the files and the data needed to reproduce the analyses in Barraquand et al. Oikos 2018 *Coastal phytoplankton community dynamics and coexistence driven by intragroup density-dependence, light and hydrodynamics*. 
 
 ### Data files 
 * `B7_base.csv`, `Teychan_base.csv` are phytoplankton counts at Teychan and B7 (+ some additional variables)
