@@ -1,2 +1,3 @@
-#MARSS results
+MARSS results
+
 This repository stores the MARSS objects corresponding to our two study sites (Teychan or Buoy 7, B7), using only physics-based variables, for five different interaction matrices (null/diagonal, full/unconstrained, removing interactions between diatoms and dinoflagellates -diatdin-, also removing interactions between pennate and centric diatoms -pencen-, or allowing interactions only between diatoms and dinoflagellates but not within the groups -inverse). 
