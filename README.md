@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1326510.svg)](https://doi.org/10.5281/zenodo.1326510)
+
+
 # Multivariate time series analyses of Arcachon phytoplankton - abiotic and biotic drivers of community dynamics
 This repository contains the files and the data needed to reproduce the analyses in Barraquand et al. Oikos 2018 *Coastal phytoplankton community dynamics and coexistence driven by intragroup density-dependence, light and hydrodynamics*. 
 
